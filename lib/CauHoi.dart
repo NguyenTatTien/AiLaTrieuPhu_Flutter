@@ -1,6 +1,6 @@
 class CauHoi {
   int? MaCH;
-  String? TenCH;
+  String? cauHoi;
   String? CauTl1;
   String? CauTl2;
   String? CauTl3;
@@ -10,7 +10,7 @@ class CauHoi {
   int? mucDo;
   CauHoi(
       {this.MaCH,
-      required this.TenCH,
+      required this.cauHoi,
       required this.CauTl1,
       required this.CauTl2,
       required this.CauTl3,
@@ -21,7 +21,7 @@ class CauHoi {
   Map<String, dynamic> toMap() {
     return {
       'MaCH': MaCH,
-      'TenCH': TenCH,
+      'cauHoi': cauHoi,
       'CauTl1': CauTl1,
       'CauTl1': CauTl1,
       'CauTl2': CauTl2,
@@ -35,6 +35,6 @@ class CauHoi {
 
   @override
   String toString() {
-    return 'CauHoi{MaCH:$MaCH,TenCH:$TenCH,CauTl1:$CauTl1,CauTl2:$CauTl2,CauTl3:$CauTl3,CauTl4:$CauTl4,DapAn:$DapAn,linhVuc:$linhVuc,mucDo:$mucDo}';
+    return 'CauHoi{MaCH:$MaCH,cauHoi:$cauHoi,CauTl1:$CauTl1,CauTl2:$CauTl2,CauTl3:$CauTl3,CauTl4:$CauTl4,DapAn:$DapAn,linhVuc:$linhVuc,mucDo:$mucDo}';
   }
 }

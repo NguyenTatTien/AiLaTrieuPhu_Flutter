@@ -19,9 +19,8 @@ class AppDB {
     await db.execute(
       '''CREATE TABLE NguoiChoi(
         MaNC INTEGER PRIMARY KEY AUTOINCREMENT,
-        TenNC TEXT, 
-        
-        )''',
+        TenNC TEXT
+        )'''
     );
       await db.execute(
       '''CREATE TABLE KetQua(
@@ -29,8 +28,8 @@ class AppDB {
         nguoiChoi INTEGER, 
         Diem INTEGER,
         ThoiGian TEXT,
-        FOREIGN KEY (nguoiChoi) REFERENCES NguoiChoi(MaNC) ON DELETE CASCADE,
-        )''',
+        FOREIGN KEY (nguoiChoi) REFERENCES NguoiChoi(MaNC) ON DELETE CASCADE
+        )'''
     );
     // await db.execute('''CREATE TABLE DapAn(
     //      MaDA INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -46,8 +45,8 @@ class AppDB {
       )''');
     await db.execute(
       '''CREATE TABLE CauHoi(
-        Ma INTEGER PRIMARY KEY AUTOINCREMENT,
-        CauHoi TEXT,
+        MaCH INTEGER PRIMARY KEY AUTOINCREMENT,
+        cauHoi TEXT,
         CauTl1 Text,
         CauTl2 Text,
         CauTl3 Text,
@@ -57,7 +56,7 @@ class AppDB {
         mucDo INTEGER,
         FOREIGN KEY (linhVuc) REFERENCES LinhVuc(MaLV) ON DELETE CASCADE,
         FOREIGN KEY (mucDo) REFERENCES MucDo(MaMD) ON DELETE CASCADE
-        )''',
+        )'''
     );
 
     print('create table');
