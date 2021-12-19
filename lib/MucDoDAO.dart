@@ -6,11 +6,21 @@ import 'dart:async';
 
 import 'MucDo.dart';
 import 'dbhelper.dart';
-class MucDoDao{
-    static Future<void> insertOwner(MucDo MD) async {
+class MucDoDAO{
+    static Future<void> insertMD(MucDo MD) async {
     final db = await AppDB.connectToDb();
     await db.insert("MucDo",MD.toMap(),
         conflictAlgorithm: ConflictAlgorithm.replace);
     print("${MD.TenMD} was inserted to db mucdo");
+  }
+  static Future<List<MucDo>> ListMD() async {
+    final db = await AppDB.connectToDb();
+    List<MucDo> list = [];
+    final List<Map<String, dynamic>> maps = await db.query('MucDo');
+    List.generate(maps.length, (i) {
+      list.add(new MucDo(
+          MaMD: maps[i]['MaMD'], TenMD: maps[i]['TenMD']));
+    });
+    return list;
   }
 }
