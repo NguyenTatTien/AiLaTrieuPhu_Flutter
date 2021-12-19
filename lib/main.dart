@@ -1,3 +1,4 @@
+import 'package:ailatrieuphu_flutter/CauHoiDAO.dart';
 import 'package:ailatrieuphu_flutter/LinhVucDAO.dart';
 import 'package:ailatrieuphu_flutter/MucDo.dart';
 import 'package:flutter/material.dart';
@@ -49,6 +50,11 @@ void main() async {
     for (int i = 0; i < mucdo.length; i++) {
       MucDo md = new MucDo(TenMD: mucdo[i]);
       MucDoDAO.insertMD(md);
+    }
+  }
+  if(CauHoiDAO.ListCH()==null){
+    for(int i=0;i<listCauHoi.length; i++) {
+      CauHoiDAO.insertCH(listCauHoi[i]);
     }
   }
 
