@@ -1,53 +1,11 @@
 import 'package:flutter/material.dart';
 
-import '../NguoiChoi.dart';
-import '../NguoiChoiDAO.dart';
-
-class FirstView extends StatefulWidget {
-  const FirstView({Key? key}) : super(key: key);
-
-  @override
-  _FirstViewState createState() => _FirstViewState();
-}
-
-class _FirstViewState extends State<FirstView>
-    with SingleTickerProviderStateMixin {
-  late AnimationController _controller;
-  List<NguoiChoi> Players = [];
-
-  @override
-  void initState() {
-    super.initState();
-    _controller = AnimationController(vsync: this);
-    LoadPlayers();
-  }
-
-  void LoadPlayers() async {
-    Players = await NguoiChoiDAO.ListNC();
- 
-  }
-
-  @override
-  void dispose() {
-    super.dispose();
-    _controller.dispose();
-  }
-
+class ScoreView extends StatelessWidget{
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-        backgroundColor: Colors.indigo.shade900,
-        appBar: AppBar(
-          title: Center(
-            child: Text("User"),
-          ),
-          leading: IconButton(
-            icon: Icon(Icons.add),
-            onPressed: () {
-              Navigator.pushNamed(context, '/AddUser');
-            },
-          ),
-        ),
+    return  Scaffold(
+      backgroundColor:Colors.indigo.shade900,
+       
         body: ListView.builder(
           itemBuilder: (BuildContext context, int index) {
             return Container(
@@ -58,10 +16,9 @@ class _FirstViewState extends State<FirstView>
                       Expanded(
                         child: Text(
                           // "${Players[index].TenNC
-                          "${Players[index].TenNC}",textAlign: TextAlign.center,
+                          "tiennguyen",
                           style: TextStyle(
                               overflow: TextOverflow.ellipsis,
-                              fontSize:16,
                               color: Colors.white),
                         ),
                         flex: 7,
@@ -77,20 +34,21 @@ class _FirstViewState extends State<FirstView>
                   ),
                   onTap: () {
                     Navigator.pushNamed(context, "/Menu",
-                        arguments: NguoiChoi(
-                            MaNC: Players[index].MaNC,
-                            TenNC: Players[index].TenNC));
+                        // arguments: NguoiChoi(
+                        //     MaNC: Players[index].MaNC,
+                        //     TenNC: Players[index].TenNC)
+                            );
                   }),
               margin: EdgeInsets.fromLTRB(10, 5, 10, 5),
-              padding: EdgeInsets.all(5),
+              padding: EdgeInsets.all(10),
 
               decoration: BoxDecoration(
-                  color: Colors.deepPurpleAccent,
+                  color: Colors.black,
                   borderRadius: BorderRadius.all(Radius.circular(30))),
               // decoration: BoxDecoration(borderRadius: BorderRadius.all(Radius.circular(5))),
             );
           },
-          itemCount: Players.length,
+          itemCount: 3,
         ));
   }
 }

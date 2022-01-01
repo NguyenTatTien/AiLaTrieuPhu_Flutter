@@ -11,7 +11,7 @@ class KetQuaDao{
     final db = await AppDB.connectToDb();
     await db.insert("KetQua",KQ.toMap(),
         conflictAlgorithm: ConflictAlgorithm.replace);
-    print("${KQ.TenKQ} was inserted to db ketqua");
+    print("${KQ.Diem} was inserted to db ketqua");
   }
    static Future<List<KetQua>> ListMD() async {
     final db = await AppDB.connectToDb();
@@ -19,7 +19,7 @@ class KetQuaDao{
     final List<Map<String, dynamic>> maps = await db.query('KetQua');
     List.generate(maps.length, (i) {
       list.add(new KetQua(
-          MaKQ: maps[i]['MaKQ'], TenKQ: maps[i]['TenKQ'],NguoiChoi:maps[i]['NguoiChoi'],Diem: maps[i]['Diem'],ThoiGian: maps[i]['ThoiGian'],));
+          MaKQ: maps[i]['MaKQ'],NguoiChoi:maps[i]['NguoiChoi'],Diem: maps[i]['Diem'],ThoiGian: maps[i]['ThoiGian'],));
     });
     return list;
   }

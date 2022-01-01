@@ -1,11 +1,17 @@
 import 'package:ailatrieuphu_flutter/CauHoiDAO.dart';
 import 'package:ailatrieuphu_flutter/LinhVucDAO.dart';
 import 'package:ailatrieuphu_flutter/MucDo.dart';
+import 'package:ailatrieuphu_flutter/Views/AddUser.dart';
 import 'package:flutter/material.dart';
 
 import 'CauHoi.dart';
 import 'LinhVuc.dart';
 import 'MucDoDAO.dart';
+import 'NguoiChoi.dart';
+import 'Views/FirstView.dart';
+import 'Views/GameView.dart';
+import 'Views/MenuView.dart';
+import 'Views/OverView.dart';
 import 'dbhelper.dart';
 
 void main() async {
@@ -164,34 +170,54 @@ void main() async {
         CauTl2: "Chelsea",
         CauTl3: "Leicester City",
         CauTl4: "Manchester City",
-        DapAn: "Leicester",
+        DapAn: "Leicester City",
         linhVuc: 6,
         mucDo: 2),
   ];
   AppDB.connectToDb();
-  if(await LinhVucDAO.Count()==0){
-     for (int i = 0; i < linhvuc.length; i++) {
-    LinhVuc lv = new LinhVuc(TenLV: linhvuc[i]);
-    LinhVucDAO.insertLV(lv);
-  }
-  }
-  if(await MucDoDAO.Count()==0){
-     for (int i = 0; i < mucdo.length; i++) {
-    MucDo md = new MucDo(TenMD: mucdo[i]);
-    MucDoDAO.insertMD(md);
-  }
-  }
-  if(await CauHoiDAO.Count()==0){
-     for (int i = 0; i < listCauHoi.length; i++) {
-    CauHoiDAO.insertCH(listCauHoi[i]);
+  if (await LinhVucDAO.Count() == 0) {
+    for (int i = 0; i < linhvuc.length; i++) {
+      LinhVuc lv = new LinhVuc(TenLV: linhvuc[i]);
+      LinhVucDAO.insertLV(lv);
     }
   }
- 
+  if (await MucDoDAO.Count() == 0) {
+    for (int i = 0; i < mucdo.length; i++) {
+      MucDo md = new MucDo(TenMD: mucdo[i]);
+      MucDoDAO.insertMD(md);
+    }
+  }
+  if (await CauHoiDAO.Count() == 0) {
+    for (int i = 0; i < listCauHoi.length; i++) {
+      CauHoiDAO.insertCH(listCauHoi[i]);
+    }
+  }
 
   print(await MucDoDAO.ListMD());
   print(await LinhVucDAO.ListLV());
-  print(await CauHoiDAO.ListCH());
-  runApp(const MyApp());
+
+  runApp(MaterialApp(
+    routes: {"/": (context) => FirstView(), "/AddUser": (context) => AddUser()},
+    onGenerateRoute: (settings) {
+      if (settings.name == "/Menu") {
+        final player = settings.arguments as NguoiChoi;
+        return MaterialPageRoute(builder: (context) {
+          return MenuView(player);
+        });
+      } else if (settings.name == "/Game") {
+        final player = settings.arguments as NguoiChoi;
+        return MaterialPageRoute(builder: (context) {
+          return GameView(player: player);
+        });
+      } else if (settings.name == "/Over") {
+      
+        final score = settings.arguments as int;
+        return MaterialPageRoute(builder: (context) {
+          return OverView(score:score);
+        });
+      }
+    },
+  ));
 }
 
 class MyApp extends StatelessWidget {
