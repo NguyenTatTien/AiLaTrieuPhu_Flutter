@@ -1,13 +1,42 @@
+import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/material.dart';
 
 import '../NguoiChoi.dart';
 
-class MenuView extends StatelessWidget {
+class MenuView extends StatefulWidget {
   NguoiChoi? player;
-  MenuView(this.player);
+  MenuView({Key? key, this.player}) : super(key: key);
+
+  @override
+  _MenuViewState createState() => _MenuViewState(player);
+}
+
+class _MenuViewState extends State<MenuView>
+    with SingleTickerProviderStateMixin {
+  late AnimationController _controller;
+  NguoiChoi? player;
+  AudioCache _audio = new AudioCache();
+  AudioPlayer audioplayers = new AudioPlayer();
+  _MenuViewState(this.player);
+  @override
+  void initState() {
+    play();
+    super.initState();
+    _controller = AnimationController(vsync: this);
+  }
+
+  void play() async {
+    audioplayers = await _audio.loop("audios/Nhac-nen.mp3");
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    _controller.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
-    // TODO: implement build
     return Scaffold(
       backgroundColor: Colors.indigo.shade900,
       body: Center(
@@ -36,13 +65,16 @@ class MenuView extends StatelessWidget {
             ),
             Flexible(
                 child: Container(
-              child: Image.asset("assets/images/ALTP_LOGO.png",),
-            
-            ),flex:2),
+                  child: Image.asset(
+                    "assets/images/ALTP_LOGO.png",
+                  ),
+                ),
+                flex: 2),
             Flexible(
               child: Container(
                 child: ElevatedButton(
                     onPressed: () {
+                      audioplayers.stop();
                       Navigator.pushNamed(context, "/Game", arguments: player);
                     },
                     child: Text("Chơi game", style: TextStyle(fontSize: 17)),
@@ -78,14 +110,13 @@ class MenuView extends StatelessWidget {
               ),
               flex: 1,
             ),
-             Flexible(
+            Flexible(
               child: Container(
                 child: ElevatedButton(
                     onPressed: () {
                       Navigator.pushNamed(context, "/Instructions");
                     },
-                    child:
-                        Text("Hưởng dẫn", style: TextStyle(fontSize: 17)),
+                    child: Text("Hưởng dẫn", style: TextStyle(fontSize: 17)),
                     style: ElevatedButton.styleFrom(
                       primary: Colors.black,
                       shape: RoundedRectangleBorder(

@@ -21,6 +21,7 @@ class GameView extends StatefulWidget {
 class _GameViewState extends State<GameView>
     with SingleTickerProviderStateMixin {
   late AnimationController _controller;
+  static BuildContext? _context;
   NguoiChoi? player;
   List<Map<String, dynamic>> ListCH = [];
 
@@ -53,17 +54,14 @@ class _GameViewState extends State<GameView>
   AudioCache _audio = new AudioCache();
 
   _GameViewState(this.player);
+
   int count = 0;
   @override
   void initState() {
     _audio.play("audios/Nhac_nen_bat_dau.wav");
-    Load();
+    MucDO();
     super.initState();
     _controller = AnimationController(vsync: this);
-  }
-
-  void Load() async {
-    Next();
   }
 
   void Start() {
@@ -89,10 +87,11 @@ class _GameViewState extends State<GameView>
     } else if (number == 11) {
       ListCH = List<Map<String, dynamic>>.from(await CauHoiDAO.ListCH("Khó"));
     }
+    Next();
   }
 
   void Next() async {
-    MucDO();
+    
     timer?.cancel();
     answer = List.filled(4, "");
     Random rdcauHoi = new Random();
@@ -159,7 +158,7 @@ class _GameViewState extends State<GameView>
               } else {
                 timer2!.cancel();
 
-                Next();
+                MucDO();
               }
             });
           } else {
@@ -196,7 +195,7 @@ class _GameViewState extends State<GameView>
         if (count < 2) {
           Random rd = new Random();
           int a = rd.nextInt(answer.length);
-          if (!answer[a].contains(cauHoi["DapAn"]) && answer[i] != "") {
+          if (!answer[a].contains(cauHoi["DapAn"]) && answer[a] != "") {
             answer[a] = "";
             count++;
           }

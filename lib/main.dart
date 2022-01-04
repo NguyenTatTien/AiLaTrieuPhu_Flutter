@@ -205,7 +205,7 @@ void main() async {
       if (settings.name == "/Menu") {
         final player = settings.arguments as NguoiChoi;
         return MaterialPageRoute(builder: (context) {
-          return MenuView(player);
+          return MenuView(player:player);
         });
       } else if (settings.name == "/Game") {
         final player = settings.arguments as NguoiChoi;

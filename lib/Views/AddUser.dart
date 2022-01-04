@@ -32,7 +32,8 @@ class AddUser extends StatelessWidget {
                       NguoiChoiDAO.insertNC(
                           new NguoiChoi(TenNC: _controller.text));
                       Navigator.pop(context);
-                      Navigator.pushNamed(context, "/FristView");
+                       Navigator.pop(context);
+                      Navigator.pushNamed(context, "/User");
                     }
                   },
                   child: Text("Thêm người chơi")))
