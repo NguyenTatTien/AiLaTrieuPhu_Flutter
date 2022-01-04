@@ -22,5 +22,13 @@ class NguoiChoiDAO {
     });
     return list;
   }
-  
+  static Future<void> deleteNC(int id) async {
+    final db = await AppDB.connectToDb();
+    await db.delete(
+      'NguoiChoi',
+      where: 'MaNC=?',
+      whereArgs: [id],
+    );
+    print("Delete $id");
+  }
 }

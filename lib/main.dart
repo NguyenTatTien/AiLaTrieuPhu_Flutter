@@ -2,6 +2,7 @@ import 'package:ailatrieuphu_flutter/CauHoiDAO.dart';
 import 'package:ailatrieuphu_flutter/LinhVucDAO.dart';
 import 'package:ailatrieuphu_flutter/MucDo.dart';
 import 'package:ailatrieuphu_flutter/Views/AddUser.dart';
+import 'package:ailatrieuphu_flutter/Views/ScoreView.dart';
 import 'package:flutter/material.dart';
 
 import 'CauHoi.dart';
@@ -9,8 +10,10 @@ import 'LinhVuc.dart';
 import 'MucDoDAO.dart';
 import 'NguoiChoi.dart';
 import 'Views/FirstView.dart';
+import 'Views/UserView.dart';
 import 'Views/GameView.dart';
 import 'Views/MenuView.dart';
+import 'Views/InstructionsView.dart';
 import 'Views/OverView.dart';
 import 'dbhelper.dart';
 
@@ -28,7 +31,7 @@ void main() async {
   var mucdo = ["Dễ", "Trung bình", "Khó"];
   List<CauHoi> listCauHoi = [
     new CauHoi(
-        cauHoi: "Điền vào câu tục ngữ sau:\"Đàu voi đuôi...\"?",
+        cauHoi: "Điền vào câu tục ngữ sau:\"Đầu voi đuôi...\"?",
         CauTl1: "Kiến",
         CauTl2: "Khỉ",
         CauTl3: "Lợn",
@@ -197,7 +200,7 @@ void main() async {
   print(await LinhVucDAO.ListLV());
 
   runApp(MaterialApp(
-    routes: {"/": (context) => FirstView(), "/AddUser": (context) => AddUser()},
+    routes: {"/": (context) => FirstView(),"/User": (context) =>UserView(), "/AddUser": (context) => AddUser(),"/Instructions": (context) =>InstructionsView()},
     onGenerateRoute: (settings) {
       if (settings.name == "/Menu") {
         final player = settings.arguments as NguoiChoi;
@@ -210,10 +213,14 @@ void main() async {
           return GameView(player: player);
         });
       } else if (settings.name == "/Over") {
-      
         final score = settings.arguments as int;
         return MaterialPageRoute(builder: (context) {
-          return OverView(score:score);
+          return OverView(score: score);
+        });
+      } else if (settings.name == "/Score") {
+        final player = settings.arguments as NguoiChoi;
+        return MaterialPageRoute(builder: (context) {
+          return ScoreView(player: player);
         });
       }
     },

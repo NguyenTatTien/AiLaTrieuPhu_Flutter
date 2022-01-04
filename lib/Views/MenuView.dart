@@ -16,40 +16,36 @@ class MenuView extends StatelessWidget {
           children: [
             Flexible(
               child: Container(
-                child: Text("Hello, "+player!.TenNC!,style:TextStyle(fontSize: 22,color:Colors.white)),
+                child: ElevatedButton(
+                    onPressed: () {
+                      Navigator.pushNamed(context, "/Score", arguments: player);
+                    },
+                    child: Text("${player!.TenNC}",
+                        style: TextStyle(fontSize: 17)),
+                    style: ElevatedButton.styleFrom(
+                      primary: Colors.yellow.shade800,
+                      shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(30),
+                          side: BorderSide(color: Colors.white)),
+                    )),
                 padding: EdgeInsets.all(10),
+                width: double.infinity,
+                height: 70,
               ),
               flex: 1,
             ),
-            // Flexible(
-            //     child: ConstrainedBox(
-            //   constraints: BoxConstraints(),
-            //   child: Container(
-            //       child: DecoratedBox(child: ElevatedButton(
-            //           onPressed: () {
-            //             Navigator.pushNamed(context, "/Game",
-            //                 arguments: NguoiChoi(
-            //                     MaNC: player!.MaNC, TenNC: player!.TenNC));
-            //           },
-            //           child: Text("Chơi game",style: TextStyle(fontSize:20),),style: ElevatedButton.styleFrom(
-            //             shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(30),side:BorderSide(color:Colors.white)),
-            //           primary: Colors.transparent,
-
-            //           )),decoration: BoxDecoration(gradient: LinearGradient(colors: [Colors.indigoAccent.shade700,Colors.purple.shade800,Colors.indigoAccent.shade700]),borderRadius: BorderRadius.circular(30),border: Border.all(color: Colors.white)),),
-            //       padding: EdgeInsets.all(10),
-            //      width: double.infinity,
-            //      height: 70,
-
-            //       ),
-
-            // ),flex: 1,),
+            Flexible(
+                child: Container(
+              child: Image.asset("assets/images/ALTP_LOGO.png",),
+            
+            ),flex:2),
             Flexible(
               child: Container(
                 child: ElevatedButton(
                     onPressed: () {
-                      Navigator.pushNamed(context, "/Game",arguments: player);
+                      Navigator.pushNamed(context, "/Game", arguments: player);
                     },
-                    child: Text("Chơi game", style: TextStyle(fontSize: 20)),
+                    child: Text("Chơi game", style: TextStyle(fontSize: 17)),
                     style: ElevatedButton.styleFrom(
                       primary: Colors.black,
                       shape: RoundedRectangleBorder(
@@ -66,9 +62,30 @@ class MenuView extends StatelessWidget {
               child: Container(
                 child: ElevatedButton(
                     onPressed: () {
-                      
+                      Navigator.pushNamed(context, "/Score", arguments: player);
                     },
-                    child: Text("Điểm số", style: TextStyle(fontSize: 20)),
+                    child:
+                        Text("Thống kê điểm", style: TextStyle(fontSize: 17)),
+                    style: ElevatedButton.styleFrom(
+                      primary: Colors.black,
+                      shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(30),
+                          side: BorderSide(color: Colors.white)),
+                    )),
+                padding: EdgeInsets.all(10),
+                width: double.infinity,
+                height: 70,
+              ),
+              flex: 1,
+            ),
+             Flexible(
+              child: Container(
+                child: ElevatedButton(
+                    onPressed: () {
+                      Navigator.pushNamed(context, "/Instructions");
+                    },
+                    child:
+                        Text("Hưởng dẫn", style: TextStyle(fontSize: 17)),
                     style: ElevatedButton.styleFrom(
                       primary: Colors.black,
                       shape: RoundedRectangleBorder(
@@ -84,8 +101,10 @@ class MenuView extends StatelessWidget {
             Flexible(
               child: Container(
                 child: ElevatedButton(
-                    onPressed: () {},
-                    child: Text("Người chơi", style: TextStyle(fontSize: 20)),
+                    onPressed: () {
+                      Navigator.pop(context);
+                    },
+                    child: Text("Người chơi", style: TextStyle(fontSize: 17)),
                     style: ElevatedButton.styleFrom(
                       primary: Colors.black,
                       shape: RoundedRectangleBorder(

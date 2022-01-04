@@ -20,8 +20,9 @@ class AddUser extends StatelessWidget {
                 controller: _controller,
                 decoration: InputDecoration(
                     border: OutlineInputBorder(
-                        borderRadius: BorderRadius.all(Radius.circular(10))),
-                    label: Text("Nhập tên người chơi")),
+                        borderRadius: BorderRadius.all(Radius.circular(10),),borderSide: BorderSide(color: Colors.yellow)),
+                    label: Text("Nhập tên người chơi",style: TextStyle(color: Colors.white)),enabledBorder: OutlineInputBorder(borderSide: BorderSide(color: Colors.white)),),
+                    style:TextStyle(color:Colors.white)
               ),
               padding: EdgeInsets.all(10)),
           Container(

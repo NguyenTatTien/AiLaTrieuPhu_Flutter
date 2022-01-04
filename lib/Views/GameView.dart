@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:math';
 
+import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/material.dart';
 
 import '../CauHoiDAO.dart';
@@ -24,7 +25,7 @@ class _GameViewState extends State<GameView>
   List<Map<String, dynamic>> ListCH = [];
 
   List<Color> colors = List.filled(4, Colors.black);
-  List<Color> cls = List.filled(3, Colors.black);
+  List<String> imgName = ["5050.png", "call.png", "hoiKhanGia.png"];
   Map<String, dynamic> cauHoi = new Map<String, dynamic>();
   var answer = List.filled(4, "");
   Timer? timer;
@@ -49,26 +50,50 @@ class _GameViewState extends State<GameView>
     150000
   ];
   Random rd = new Random();
+  AudioCache _audio = new AudioCache();
+
   _GameViewState(this.player);
+  int count = 0;
   @override
   void initState() {
+    _audio.play("audios/Nhac_nen_bat_dau.wav");
     Load();
     super.initState();
     _controller = AnimationController(vsync: this);
   }
 
   void Load() async {
-    ListCH = List<Map<String, dynamic>>.from(await CauHoiDAO.ListCH("Dễ"));
     Next();
   }
 
-  void Next() async {
-    if (number == 6) {
+  void Start() {
+    count = 30;
+    timer = Timer.periodic(Duration(seconds: 1), (timer) {
+      if (count > 0) {
+        setState(() {
+          count--;
+        });
+      } else {
+        timer.cancel();
+        Finish();
+      }
+    });
+  }
+
+  void MucDO() async {
+    if (number == 1) {
+      ListCH = List<Map<String, dynamic>>.from(await CauHoiDAO.ListCH("Dễ"));
+    } else if (number == 6) {
       ListCH =
           List<Map<String, dynamic>>.from(await CauHoiDAO.ListCH("Trung bình"));
     } else if (number == 11) {
       ListCH = List<Map<String, dynamic>>.from(await CauHoiDAO.ListCH("Khó"));
     }
+  }
+
+  void Next() async {
+    MucDO();
+    timer?.cancel();
     answer = List.filled(4, "");
     Random rdcauHoi = new Random();
     int location = rdcauHoi.nextInt(ListCH.length);
@@ -96,82 +121,88 @@ class _GameViewState extends State<GameView>
       answer;
     });
     ListCH.removeAt(location);
+    Start();
   }
 
   void Finish() {
     DateTime time = DateTime.now();
     KetQua kp = new KetQua(
         NguoiChoi: player!.MaNC, Diem: score, ThoiGian: time.toString());
-    KetQuaDao.insertKQ(kp);
+    KetQuaDAO.insertKQ(kp);
+    _audio.play("audios/Tieng-vo-tay.mp3");
     Navigator.pushNamed(context, "/Over", arguments: score);
   }
 
   // ignore: non_constant_identifier_names
   void Check(int index) {
-    var time = 1;
-    timer = Timer.periodic(Duration(seconds: 1), (timer) {
-      if (time > 0) {
-        setState(() {
-          colors[index] = Colors.yellow.shade800;
-        });
-        time--;
-      } else {
-        timer.cancel();
-        if (answer[index].contains(cauHoi["DapAn"])) {
-          var time2 = 1;
-          timer2 = Timer.periodic(Duration(seconds: 1), (timer) {
-            if (time2 > 0) {
-              setState(() {
-                colors[index] = Colors.green.shade800;
-                number++;
-              });
-
-              time2--;
-            } else {
-              timer2!.cancel();
-
-              Next();
-            }
-          });
+    if (answer[index] != "") {
+      _audio.play("audios/answer.mp3");
+      setState(() {
+        colors[index] = Colors.yellow.shade800;
+      });
+      var time = 1;
+      timer2 = Timer.periodic(Duration(seconds: 1), (timer) {
+        if (time > 0) {
+          time--;
         } else {
-          var temp = [];
+          timer2?.cancel();
+          if (answer[index].contains(cauHoi["DapAn"])) {
+            var time2 = 1;
+            _audio.play("audios/am_thanh_tra_loi_dung.mp3");
+            setState(() {
+              colors[index] = Colors.green.shade800;
+              number++;
+            });
+            timer2 = Timer.periodic(Duration(seconds: 1), (timer) {
+              if (time2 > 0) {
+                time2--;
+              } else {
+                timer2!.cancel();
 
-          for (int i = 0; i < 4; i++) {
-            if (answer[i].contains(cauHoi["DapAn"])) {
-              var time2 = 1;
-              timer2 = Timer.periodic(Duration(seconds: 1), (timer) {
-                if (time2 > 0) {
-                  setState(() {
-                    colors[index] = Colors.red.shade800;
-                    colors[i] = Colors.green.shade800;
-                  });
-                  time2--;
-                } else {
-                  timer2!.cancel();
-                  Finish();
-                }
-              });
+                Next();
+              }
+            });
+          } else {
+            var temp = [];
+
+            for (int i = 0; i < 4; i++) {
+              if (answer[i].contains(cauHoi["DapAn"])) {
+                var time2 = 1;
+                _audio.play("audios/Am-thanh-tra-loi-sai.mp3");
+                setState(() {
+                  colors[index] = Colors.red.shade800;
+                  colors[i] = Colors.green.shade800;
+                });
+                timer2 = Timer.periodic(Duration(seconds: 1), (timer) {
+                  if (time2 > 0) {
+                    time2--;
+                  } else {
+                    timer2!.cancel();
+                    Finish();
+                  }
+                });
+              }
             }
           }
         }
-      }
-    });
+      });
+    }
   }
 
   void half() {
-    if (cls[0] == Colors.black) {
+    if (imgName[0] == "5050.png") {
       int count = 0;
       for (int i = 0;; i++) {
         if (count < 2) {
           Random rd = new Random();
           int a = rd.nextInt(answer.length);
-          if (!answer[i].contains(cauHoi["DapAn"]) && answer[i] != "") {
-            answer[i] = "";
+          if (!answer[a].contains(cauHoi["DapAn"]) && answer[i] != "") {
+            answer[a] = "";
             count++;
           }
         } else {
           setState(() {
-            cls[0] = Colors.white70;
+            imgName[0] = "50_50used.png";
           });
           break;
         }
@@ -180,16 +211,23 @@ class _GameViewState extends State<GameView>
   }
 
   void call() {
-    if (cls[1] == Colors.black) {
+    if (imgName[1] == "call.png") {
       setState(() {
-        cls[1] = Colors.white70;
+        imgName[1] = "call_used.png";
       });
+      String feedback = "";
+      for (int i = 0; i < 4; i++) {
+        if (answer[i].contains(cauHoi["DapAn"])) {
+          feedback = answer[i];
+          break;
+        }
+      }
       showDialog(
         context: context,
         builder: (BuildContext context) {
           return AlertDialog(
             title: Text("Gọi điện"),
-            content: Text("Tôi nghĩ đáp án: ${cauHoi["DapAn"]}"),
+            content: Text("Tôi nghĩ đáp án: $feedback"),
             actions: [
               ElevatedButton(
                 onPressed: () {
@@ -205,9 +243,9 @@ class _GameViewState extends State<GameView>
   }
 
   void ask_audience() {
-    if (cls[2] == Colors.black) {
+    if (imgName[2] == "hoiKhanGia.png") {
       setState(() {
-        cls[2] = Colors.white70;
+        imgName[2] = "hoiKhanGia_used.png";
       });
       int ptr = 100;
       var pt = List.filled(4, "");
@@ -235,7 +273,7 @@ class _GameViewState extends State<GameView>
         context: context,
         builder: (BuildContext context) {
           return AlertDialog(
-            title: Text("Gọi điện"),
+            title: Text("Hỏi khán giả"),
             content: Text("${pt[0]},${pt[1]},${pt[2]},${pt[3]}"),
             actions: [
               ElevatedButton(
@@ -284,9 +322,9 @@ class _GameViewState extends State<GameView>
                 Container(
                     child: ElevatedButton(
                         onPressed: () => half(),
-                        child: Text("50:50", style: TextStyle(fontSize: 17)),
+                        child: Image.asset("assets/images/${imgName[0]}"),
                         style: ElevatedButton.styleFrom(
-                          primary: cls[0],
+                          primary: Colors.transparent,
                           shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(20),
                               side: BorderSide(color: Colors.white)),
@@ -297,9 +335,9 @@ class _GameViewState extends State<GameView>
                 Container(
                     child: ElevatedButton(
                         onPressed: () => call(),
-                        child: Text(""),
+                        child: Image.asset("assets/images/${imgName[1]}"),
                         style: ElevatedButton.styleFrom(
-                          primary: cls[1],
+                          primary: Colors.transparent,
                           shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(20),
                               side: BorderSide(color: Colors.white)),
@@ -310,16 +348,21 @@ class _GameViewState extends State<GameView>
                 Container(
                     child: ElevatedButton(
                         onPressed: () => ask_audience(),
-                        child: Text(""),
+                        child: Image.asset("assets/images/${imgName[2]}"),
                         style: ElevatedButton.styleFrom(
-                          primary: cls[2],
+                          primary: Colors.transparent,
                           shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(20),
                               side: BorderSide(color: Colors.white)),
                         )),
                     height: 40,
                     width: 70,
-                    margin: EdgeInsets.fromLTRB(10, 5, 5, 5))
+                    margin: EdgeInsets.fromLTRB(10, 5, 5, 5)),
+                Container(
+                  child: Text("Time:$count",
+                      textAlign: TextAlign.center,
+                      style: TextStyle(color: Colors.white, fontSize: 16)),
+                )
               ],
             )),
             Flexible(
