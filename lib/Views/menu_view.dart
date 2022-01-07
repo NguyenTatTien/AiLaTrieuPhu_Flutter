@@ -20,7 +20,6 @@ class _MenuViewState extends State<MenuView>
   _MenuViewState(this.player);
   @override
   void initState() {
-    AudioPlayer audioplayers = new AudioPlayer();
     play();
     super.initState();
     _controller = AnimationController(vsync: this);
@@ -32,6 +31,7 @@ class _MenuViewState extends State<MenuView>
 
   @override
   void dispose() {
+    audioplayers.dispose();
     super.dispose();
     _controller.dispose();
   }

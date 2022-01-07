@@ -54,6 +54,7 @@ class _GameViewState extends State<GameView>
   AudioCache _audio = new AudioCache();
   var height = List.filled(4, 0.0);
   bool used = false;
+  bool check_choose = false;
   _GameViewState(this.player);
 
   int count = 0;
@@ -92,7 +93,8 @@ class _GameViewState extends State<GameView>
   }
 
   void Next() async {
-    used=false;
+    check_choose = false;
+    used = false;
     timer?.cancel();
     height = List.filled(4, 0.0);
     answer = List.filled(4, "");
@@ -136,11 +138,13 @@ class _GameViewState extends State<GameView>
 
   // ignore: non_constant_identifier_names
   void Check(int index) {
-    if (answer[index] != "") {
+    if (answer[index] != "" && check_choose == false) {
+      check_choose = true;
       _audio.play("audios/answer.mp3");
       setState(() {
         colors[index] = Colors.yellow.shade800;
       });
+       
       var time = 1;
       timer2 = Timer.periodic(Duration(seconds: 1), (timer) {
         if (time > 0) {
@@ -185,6 +189,7 @@ class _GameViewState extends State<GameView>
           }
         }
       });
+     
     }
   }
 
@@ -364,7 +369,7 @@ class _GameViewState extends State<GameView>
                       duration: Duration(milliseconds: 800),
                       color: Colors.yellow,
                       width: 30,
-                      height: height[0]*4/5,
+                      height: height[0] * 4 / 5,
                       curve: Curves.ease,
                     ),
                     margin: EdgeInsets.fromLTRB(15, 5, 15, 5),
@@ -374,7 +379,7 @@ class _GameViewState extends State<GameView>
                       duration: Duration(milliseconds: 800),
                       color: Colors.yellow,
                       width: 30,
-                      height: height[1]*4/5,
+                      height: height[1] * 4 / 5,
                       curve: Curves.ease,
                     ),
                     margin: EdgeInsets.fromLTRB(15, 5, 15, 5),
@@ -384,7 +389,7 @@ class _GameViewState extends State<GameView>
                       duration: Duration(milliseconds: 800),
                       color: Colors.yellow,
                       width: 30,
-                      height: height[2]*4/5,
+                      height: height[2] * 4 / 5,
                       curve: Curves.ease,
                     ),
                     margin: EdgeInsets.fromLTRB(15, 5, 15, 5),
@@ -394,7 +399,7 @@ class _GameViewState extends State<GameView>
                       duration: Duration(milliseconds: 800),
                       color: Colors.yellow,
                       width: 30,
-                      height: height[3]*4/5,
+                      height: height[3] * 4 / 5,
                       curve: Curves.ease,
                     ),
                     margin: EdgeInsets.fromLTRB(15, 5, 15, 5),
@@ -408,18 +413,15 @@ class _GameViewState extends State<GameView>
                   margin: EdgeInsets.fromLTRB(6, 0, 6, 0),
                 ),
                 Container(
-                    child: Text(
-                        used == false ? "" : "B: ${height[1].toInt()}%",
+                    child: Text(used == false ? "" : "B: ${height[1].toInt()}%",
                         style: TextStyle(fontSize: 16, color: Colors.white)),
                     margin: EdgeInsets.fromLTRB(6, 0, 6, 0)),
                 Container(
-                    child: Text(
-                        used == false ? "" : "C: ${height[2].toInt()}%",
+                    child: Text(used == false ? "" : "C: ${height[2].toInt()}%",
                         style: TextStyle(fontSize: 16, color: Colors.white)),
                     margin: EdgeInsets.fromLTRB(6, 0, 6, 0)),
                 Container(
-                    child: Text(
-                        used == false ? "" : "D: ${height[3].toInt()}%",
+                    child: Text(used == false ? "" : "D: ${height[3].toInt()}%",
                         style: TextStyle(fontSize: 16, color: Colors.white)),
                     margin: EdgeInsets.fromLTRB(6, 0, 6, 0)),
               ])
