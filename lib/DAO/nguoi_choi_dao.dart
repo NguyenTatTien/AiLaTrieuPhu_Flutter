@@ -2,8 +2,8 @@ import 'package:flutter/widgets.dart';
 import 'package:sqflite/sqflite.dart';
 import 'dart:async';
 
-import 'NguoiChoi.dart';
-import 'dbhelper.dart';
+import '../Models/nguoi_choi.dart';
+import '../dbhelper.dart';
 
 class NguoiChoiDAO {
   static Future<void> insertNC(NguoiChoi NC) async {

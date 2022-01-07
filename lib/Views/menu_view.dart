@@ -1,7 +1,7 @@
 import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/material.dart';
 
-import '../NguoiChoi.dart';
+import '../Models/nguoi_choi.dart';
 
 class MenuView extends StatefulWidget {
   NguoiChoi? player;
@@ -20,6 +20,7 @@ class _MenuViewState extends State<MenuView>
   _MenuViewState(this.player);
   @override
   void initState() {
+    AudioPlayer audioplayers = new AudioPlayer();
     play();
     super.initState();
     _controller = AnimationController(vsync: this);

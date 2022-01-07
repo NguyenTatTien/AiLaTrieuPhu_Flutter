@@ -4,8 +4,8 @@ import 'package:path/path.dart';
 import 'package:flutter/widgets.dart';
 import 'dart:async';
 
-import 'MucDo.dart';
-import 'dbhelper.dart';
+import '../Models/muc_do.dart';
+import '../dbhelper.dart';
 
 class MucDoDAO {
   static Future<void> insertMD(MucDo MD) async {

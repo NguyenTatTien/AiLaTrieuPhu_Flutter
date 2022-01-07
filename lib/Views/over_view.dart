@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../NguoiChoi.dart';
+import '../Models/nguoi_choi.dart';
 
 class OverView extends StatelessWidget {
   int? score;
@@ -17,6 +17,7 @@ class OverView extends StatelessWidget {
               child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
+        
           Text("Bạn được $score đ\nXin chúc mừng",
               textAlign: TextAlign.center,
               style: TextStyle(fontSize: 25, color: Colors.white)),

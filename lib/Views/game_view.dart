@@ -4,11 +4,11 @@ import 'dart:math';
 import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/material.dart';
 
-import '../CauHoiDAO.dart';
-import '../KetQua.dart';
-import '../KetQuaDAO.dart';
-import '../NguoiChoi.dart';
-import '../NguoiChoiDAO.dart';
+import '../DAO/cau_hoi_dao.dart';
+import '../Models/ket_qua.dart';
+import '../DAO/ket_qua_dao.dart';
+import '../Models/nguoi_choi.dart';
+import '../DAO/nguoi_choi_dao.dart';
 
 class GameView extends StatefulWidget {
   NguoiChoi? player;
@@ -52,7 +52,8 @@ class _GameViewState extends State<GameView>
   ];
   Random rd = new Random();
   AudioCache _audio = new AudioCache();
-
+  var height = List.filled(4, 0.0);
+  bool used = false;
   _GameViewState(this.player);
 
   int count = 0;
@@ -91,8 +92,9 @@ class _GameViewState extends State<GameView>
   }
 
   void Next() async {
-    
+    used=false;
     timer?.cancel();
+    height = List.filled(4, 0.0);
     answer = List.filled(4, "");
     Random rdcauHoi = new Random();
     int location = rdcauHoi.nextInt(ListCH.length);
@@ -162,8 +164,6 @@ class _GameViewState extends State<GameView>
               }
             });
           } else {
-            var temp = [];
-
             for (int i = 0; i < 4; i++) {
               if (answer[i].contains(cauHoi["DapAn"])) {
                 var time2 = 1;
@@ -241,17 +241,19 @@ class _GameViewState extends State<GameView>
     }
   }
 
-  void ask_audience() {
+  void ask_audience() async {
     if (imgName[2] == "hoiKhanGia.png") {
       setState(() {
         imgName[2] = "hoiKhanGia_used.png";
       });
+
       int ptr = 100;
-      var pt = List.filled(4, "");
+      var pt = List.filled(4, 0.0);
       for (int i = 0; i < 4; i++) {
         if (answer[i].contains(cauHoi["DapAn"])) {
-          int a = (40 + rd.nextInt(50));
-          pt[i] = answer[i].substring(0, 2) + a.toString() + "%";
+          int a = (40 + rd.nextInt(60));
+
+          height[i] = a.toDouble();
           ptr -= a;
         }
       }
@@ -260,31 +262,19 @@ class _GameViewState extends State<GameView>
         if (!answer[i].contains(cauHoi["DapAn"])) {
           if (count < 2) {
             int a = rd.nextInt(ptr);
-            pt[i] = answer[i].substring(0, 2) + a.toString() + "%";
+
+            height[i] = a.toDouble();
             ptr -= a;
             count++;
           } else {
-            pt[i] = answer[i].substring(0, 2) + ptr.toString() + "%";
+            height[i] = ptr.toDouble();
           }
         }
       }
-      showDialog(
-        context: context,
-        builder: (BuildContext context) {
-          return AlertDialog(
-            title: Text("Hỏi khán giả"),
-            content: Text("${pt[0]},${pt[1]},${pt[2]},${pt[3]}"),
-            actions: [
-              ElevatedButton(
-                onPressed: () {
-                  Navigator.of(context).pop(false);
-                },
-                child: Text('OK'),
-              ),
-            ],
-          );
-        },
-      );
+      used = true;
+      setState(() {
+        height;
+      });
     }
   }
 
@@ -314,7 +304,7 @@ class _GameViewState extends State<GameView>
                         borderRadius: BorderRadius.all(Radius.circular(20)),
                         border: Border.all(color: Colors.white)),
                     padding: EdgeInsets.only(top: 5, bottom: 5),
-                    margin: EdgeInsets.only(top: 10, bottom: 10))),
+                    margin: EdgeInsets.only(top: 5, bottom: 5))),
             Flexible(
                 child: Row(
               children: [
@@ -364,6 +354,76 @@ class _GameViewState extends State<GameView>
                 )
               ],
             )),
+            Column(children: [
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.end,
+                children: [
+                  Container(
+                    child: AnimatedContainer(
+                      duration: Duration(milliseconds: 800),
+                      color: Colors.yellow,
+                      width: 30,
+                      height: height[0]*4/5,
+                      curve: Curves.ease,
+                    ),
+                    margin: EdgeInsets.fromLTRB(15, 5, 15, 5),
+                  ),
+                  Container(
+                    child: AnimatedContainer(
+                      duration: Duration(milliseconds: 800),
+                      color: Colors.yellow,
+                      width: 30,
+                      height: height[1]*4/5,
+                      curve: Curves.ease,
+                    ),
+                    margin: EdgeInsets.fromLTRB(15, 5, 15, 5),
+                  ),
+                  Container(
+                    child: AnimatedContainer(
+                      duration: Duration(milliseconds: 800),
+                      color: Colors.yellow,
+                      width: 30,
+                      height: height[2]*4/5,
+                      curve: Curves.ease,
+                    ),
+                    margin: EdgeInsets.fromLTRB(15, 5, 15, 5),
+                  ),
+                  Container(
+                    child: AnimatedContainer(
+                      duration: Duration(milliseconds: 800),
+                      color: Colors.yellow,
+                      width: 30,
+                      height: height[3]*4/5,
+                      curve: Curves.ease,
+                    ),
+                    margin: EdgeInsets.fromLTRB(15, 5, 15, 5),
+                  ),
+                ],
+              ),
+              Row(mainAxisAlignment: MainAxisAlignment.center, children: [
+                Container(
+                  child: Text(used == false ? "" : "A: ${height[0].toInt()}%",
+                      style: TextStyle(fontSize: 16, color: Colors.white)),
+                  margin: EdgeInsets.fromLTRB(6, 0, 6, 0),
+                ),
+                Container(
+                    child: Text(
+                        used == false ? "" : "B: ${height[1].toInt()}%",
+                        style: TextStyle(fontSize: 16, color: Colors.white)),
+                    margin: EdgeInsets.fromLTRB(6, 0, 6, 0)),
+                Container(
+                    child: Text(
+                        used == false ? "" : "C: ${height[2].toInt()}%",
+                        style: TextStyle(fontSize: 16, color: Colors.white)),
+                    margin: EdgeInsets.fromLTRB(6, 0, 6, 0)),
+                Container(
+                    child: Text(
+                        used == false ? "" : "D: ${height[3].toInt()}%",
+                        style: TextStyle(fontSize: 16, color: Colors.white)),
+                    margin: EdgeInsets.fromLTRB(6, 0, 6, 0)),
+              ])
+            ]),
             Flexible(
                 child: Container(
                     child: Text("${cauHoi["TenLV"]}",

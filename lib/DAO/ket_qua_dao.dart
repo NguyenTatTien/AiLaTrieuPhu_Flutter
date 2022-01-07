@@ -4,8 +4,8 @@ import 'package:path/path.dart';
 import 'package:flutter/widgets.dart';
 import 'dart:async';
 
-import 'KetQua.dart';
-import 'dbhelper.dart';
+import '../Models/ket_qua.dart';
+import '../dbhelper.dart';
 class KetQuaDAO{
     static Future<void> insertKQ(KetQua KQ) async {
     final db = await AppDB.connectToDb();

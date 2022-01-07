@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 
-import '../KetQua.dart';
-import '../KetQuaDAO.dart';
-import '../NguoiChoi.dart';
+import '../Models/ket_qua.dart';
+import '../DAO/ket_qua_dao.dart';
+import '../Models/nguoi_choi.dart';
 
 class ScoreView extends StatefulWidget {
   NguoiChoi? player;
@@ -45,39 +45,29 @@ class _ScoreViewState extends State<ScoreView>
         body: ListView.builder(
           itemBuilder: (BuildContext context, int index) {
             return Container(
-              child: InkWell(
+                child: InkWell(
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Expanded(
                         child: Text(
                           // "${Players[index].TenNC
-                          "${kq[index].Diem} đ - ${kq[index].ThoiGian}",textAlign:TextAlign.center,
-                          style: TextStyle(
-                              overflow: TextOverflow.ellipsis,
-                              color: Colors.white, fontSize:16),
+                          "${kq[index].Diem} đ    ${kq[index].ThoiGian}",
+                          textAlign: TextAlign.center,
+                          style: TextStyle(color: Colors.white, fontSize: 17),
                         ),
                         flex: 7,
                       ),
-                    
                     ],
                   ),
-                  onTap: () {
-                    Navigator.pushNamed(
-                      context, "/Menu",
-                      // arguments: NguoiChoi(
-                      //     MaNC: Players[index].MaNC,
-                      //     TenNC: Players[index].TenNC)
-                    );
-                  }),
-              margin: EdgeInsets.fromLTRB(10, 5, 10, 5),
-              padding: EdgeInsets.all(20),
-
-              decoration: BoxDecoration(
-                  color: Colors.black,
-                  borderRadius: BorderRadius.all(Radius.circular(30))),
-              // decoration: BoxDecoration(borderRadius: BorderRadius.all(Radius.circular(5))),
-            );
+                ),
+                margin: EdgeInsets.fromLTRB(10, 5, 10, 5),
+                padding: EdgeInsets.all(20),
+                decoration: BoxDecoration(
+                    
+                    border: Border(bottom: BorderSide(color: Colors.white))
+                    // decoration: BoxDecoration(borderRadius: BorderRadius.all(Radius.circular(5))),
+                    ));
           },
           itemCount: kq.length,
         ));

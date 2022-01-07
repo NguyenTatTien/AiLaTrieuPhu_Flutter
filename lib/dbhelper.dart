@@ -59,6 +59,6 @@ class AppDB {
         )'''
     );
 
-    print('create table');
+    
   }
 }

@@ -1,17 +1,17 @@
 import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/material.dart';
 
-import '../NguoiChoi.dart';
-import '../NguoiChoiDAO.dart';
+import '../Models/nguoi_choi.dart';
+import '../DAO/nguoi_choi_dao.dart';
 
-class UserView extends StatefulWidget {
-  const UserView({Key? key}) : super(key: key);
+class PlayerView extends StatefulWidget {
+  const PlayerView({Key? key}) : super(key: key);
 
   @override
-  _UserViewState createState() => _UserViewState();
+  _PlayerViewState createState() => _PlayerViewState();
 }
 
-class _UserViewState extends State<UserView>
+class _PlayerViewState extends State<PlayerView>
     with SingleTickerProviderStateMixin {
   late AnimationController _controller;
   List<NguoiChoi> Players = [];
@@ -47,11 +47,11 @@ class _UserViewState extends State<UserView>
     return Scaffold(
         backgroundColor: Colors.indigo.shade900,
         appBar: AppBar(
-          title: Text("User"),
+          title: Text("Player"),
           leading: IconButton(
             icon: Icon(Icons.add),
             onPressed: () {
-              Navigator.pushNamed(context, '/AddUser');
+              Navigator.pushNamed(context, '/AddPlayer');
             },
           ),
         ),
@@ -69,7 +69,7 @@ class _UserViewState extends State<UserView>
                           textAlign: TextAlign.center,
                           style: TextStyle(
                               overflow: TextOverflow.ellipsis,
-                              fontSize: 16,
+                              fontSize: 17,
                               color: Colors.white),
                         ),
                         flex: 7,

@@ -18,7 +18,7 @@ class _FirstViewState extends State<FirstView> {
         count--;
       } else {
         _timer?.cancel();
-        Navigator.pushNamed(context, "/User");
+        Navigator.pushNamed(context, "/Player");
       }
     });
   }

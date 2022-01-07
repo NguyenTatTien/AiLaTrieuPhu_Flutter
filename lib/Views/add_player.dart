@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import '../NguoiChoi.dart';
-import '../NguoiChoiDAO.dart';
+import '../Models/nguoi_choi.dart';
+import '../DAO/nguoi_choi_dao.dart';
 
-class AddUser extends StatelessWidget {
+class AddPlayer extends StatelessWidget {
   TextEditingController _controller = TextEditingController();
  
 
@@ -18,7 +18,7 @@ class AddUser extends StatelessWidget {
           Container(
               child: TextField(
                 controller: _controller,
-                decoration: InputDecoration(
+                decoration: const InputDecoration(
                     border: OutlineInputBorder(
                         borderRadius: BorderRadius.all(Radius.circular(10),),borderSide: BorderSide(color: Colors.yellow)),
                     label: Text("Nhập tên người chơi",style: TextStyle(color: Colors.white)),enabledBorder: OutlineInputBorder(borderSide: BorderSide(color: Colors.white)),),
@@ -33,7 +33,7 @@ class AddUser extends StatelessWidget {
                           new NguoiChoi(TenNC: _controller.text));
                       Navigator.pop(context);
                        Navigator.pop(context);
-                      Navigator.pushNamed(context, "/User");
+                      Navigator.pushNamed(context, "/Player");
                     }
                   },
                   child: Text("Thêm người chơi")))

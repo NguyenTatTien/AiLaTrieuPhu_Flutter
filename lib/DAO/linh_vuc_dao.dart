@@ -4,8 +4,8 @@ import 'package:path/path.dart';
 import 'package:flutter/widgets.dart';
 import 'dart:async';
 
-import 'LinhVuc.dart';
-import 'dbhelper.dart';
+import '../Models/linh_vuc.dart';
+import '../dbhelper.dart';
 
 class LinhVucDAO {
   static Future<void> insertLV(LinhVuc LV) async {

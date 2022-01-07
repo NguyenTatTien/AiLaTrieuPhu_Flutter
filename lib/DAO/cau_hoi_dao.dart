@@ -4,8 +4,8 @@ import 'package:path/path.dart';
 import 'package:flutter/widgets.dart';
 import 'dart:async';
 
-import 'CauHoi.dart';
-import 'dbhelper.dart';
+import '../Models/cau_hoi.dart';
+import '../dbhelper.dart';
 
 class CauHoiDAO {
   static Future<void> insertCH(CauHoi CH) async {
